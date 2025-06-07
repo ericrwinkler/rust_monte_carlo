@@ -60,7 +60,7 @@ fn validate_input(number_of_points: &mut i64, number_of_threads: &mut i64) {
         .parse::<i64>()
         .expect("Please provide a valid int64 as the second argument");
 
-    if *number_of_points < 1 || *number_of_threads < 1 || *number_of_threads > *number_of_points {
+    if *number_of_points < 1 || *number_of_threads < 1 {
         eprintln!(
             "Error: number_of_points and number_of_threads must be between 1 and {}",
             i64::MAX
@@ -68,7 +68,15 @@ fn validate_input(number_of_points: &mut i64, number_of_threads: &mut i64) {
         std::process::exit(1);
     }
 
+    if *number_of_threads > *number_of_points {
+        eprintln!(
+            "Error: number_of_threads must be less than number of points and should evenly divide {}",
+            i64::MAX
+        );
+        std::process::exit(1);
+    }
+
     if (*number_of_points % *number_of_threads) != 0 {
-        println!("Warning: number_of_points not divisible by number_of_threads");
+        println!("Warning: number_of_points not divisible evenly by number_of_threads");
     }
 }
