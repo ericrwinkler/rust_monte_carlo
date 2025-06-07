@@ -1,5 +1,5 @@
-use std::env;
 use rand::Rng;
+use std::env;
 use std::thread;
 use std::time::Instant;
 
@@ -13,8 +13,10 @@ fn main() {
     validate_input(&mut number_of_points, &mut number_of_threads);
 
     for _ in 0..number_of_threads {
-        let thread_handle = thread::spawn(move || monte_carlo_points_in_circle(number_of_points / number_of_threads));
-        
+        let thread_handle = thread::spawn(move || {
+            monte_carlo_points_in_circle(number_of_points / number_of_threads)
+        });
+
         threads.push(thread_handle);
     }
 
@@ -25,7 +27,6 @@ fn main() {
     let pi: f64 = 4.0 * (total_points_in_circle as f64) / (number_of_points as f64);
     println!("Estimated value of Pi: {}", pi);
     println!("Elapsed time: {:?} ms", timer.elapsed().as_millis());
-
 }
 
 fn monte_carlo_points_in_circle(number_of_points: i64) -> i64 {
@@ -42,7 +43,7 @@ fn monte_carlo_points_in_circle(number_of_points: i64) -> i64 {
             points_in_circle += 1;
         }
     }
-    return points_in_circle;
+    points_in_circle
 }
 
 fn validate_input(number_of_points: &mut i64, number_of_threads: &mut i64) {
@@ -52,13 +53,18 @@ fn validate_input(number_of_points: &mut i64, number_of_threads: &mut i64) {
         std::process::exit(1);
     }
 
-    *number_of_points = args[1].parse::<i64>().expect("Please provide a valid int64 as the first argument");
-    *number_of_threads = args[2].parse::<i64>().expect("Please provide a valid int64 as the second argument");
+    *number_of_points = args[1]
+        .parse::<i64>()
+        .expect("Please provide a valid int64 as the first argument");
+    *number_of_threads = args[2]
+        .parse::<i64>()
+        .expect("Please provide a valid int64 as the second argument");
 
-    if *number_of_points < 1
-    || *number_of_threads < 1
-    || *number_of_threads > *number_of_points {
-        eprintln!("Error: number_of_points and number_of_threads must be between 1 and {}", i64::MAX);
+    if *number_of_points < 1 || *number_of_threads < 1 || *number_of_threads > *number_of_points {
+        eprintln!(
+            "Error: number_of_points and number_of_threads must be between 1 and {}",
+            i64::MAX
+        );
         std::process::exit(1);
     }
 
