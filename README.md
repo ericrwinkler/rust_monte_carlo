@@ -2,7 +2,7 @@
 first rust project
 
 Notes for myself
-Linter:
-   cargo clippy --fix 
-Styling:
-   cargo fmt
+
+Linter: cargo clippy --fix 
+
+Styling: cargo fmt
